@@ -1,6 +1,12 @@
 const beamDialog = () => {
+  const boldStyle = {
+    fontStyle: "bold",
+    fontSize: "60px",
+    fill: "red",
+  };
+
   return (
-    <svg height="300" width="300">
+    <svg width="306" height="300">
       <line
         x1="30"
         y1="120"
@@ -15,25 +21,19 @@ const beamDialog = () => {
         y2="140"
         style={{ stroke: "rgb(255,0,0)", strokeWidth: "4" }}
       />
-      <text x="25" y="175" fill="red" fontSize="xxx-large">
-        ^
-        <tspan x="273" y="175" fill="red" fontSize="xxx-large">
-          ^
-        </tspan>
-        <tspan x="37" y="170" fill="red" fontSize="xx-large">
-          |
-        </tspan>
-        <tspan x="285" y="170" fill="red" fontSize="xx-large">
-          |
-        </tspan>
+      <text x="18" y="183" style={boldStyle}>
+        ↑
       </text>
-      <text x="30" y="200" fontSize="large">
+      <text x="22" y="200" fontSize="large">
         R1
       </text>
       <text x="150" y="200" fontSize="large">
-        20'
+        {window.result.L + "'"}
       </text>
-      <text x="280" y="200" fontSize="large">
+      <text x="283" y="183" style={boldStyle}>
+        ↑
+      </text>
+      <text x="286" y="200" fontSize="large">
         R2
       </text>
     </svg>
