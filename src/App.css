@@ -1,0 +1,8 @@
+.ant-table-tbody > tr > td {
+    height: 6px;
+    padding: 3px;
+  }  
+.ant-table-thead > tr > th {
+  height: 6px;
+  padding: 3px;
+}
