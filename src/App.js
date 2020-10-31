@@ -4,9 +4,16 @@ import beamDiagram from "./beamDiagram";
 import "antd/dist/antd.css";
 import "./App.css";
 
+const round = (num, decimalPlaces = 0) => {
+  const p = Math.pow(10, decimalPlaces);
+  const m = num * p * (1 + Number.EPSILON);
+  return Math.round(m) / p;
+};
+
 const App = () => {
   const [showResult, setShowResult] = useState(false);
   const result = window.result;
+  const Vmax = Math.max(result.R1, result.R2);
 
   const inputTable = {
     dataSource: [
@@ -107,30 +114,36 @@ const App = () => {
     dataSource: [
       {
         name: "WOOD",
-        Srequired: 87.08,
-        Arequired: 29.83,
-        Irequired: 300.15,
+        Srequired: round((result.M.max * 12) / 1000, 2),
+        Arequired: round((1.5 * Vmax) / 95, 2),
+        Irequired: round((34560 * result.D.max) / (1700000 * result.L), 2),
         key: "0",
       },
       {
         name: "GLULAM",
-        Srequired: 38.19,
-        Arequired: 18.08,
-        Irequired: 298.39,
+        Srequired: round((result.M.max * 12) / (0.95 * 2400), 2),
+        Arequired: round((1.5 * Vmax) / (0.95 * 165), 2),
+        Irequired: round(
+          (34560 * result.D.max) / (0.95 * 1800000 * result.L),
+          2
+        ),
         key: "1",
       },
       {
         name: "PARALLAM",
-        Srequired: 31.6,
-        Arequired: 10.28,
-        Irequired: 268.55,
+        Srequired: round((result.M.max * 12) / (0.95 * 2900), 2),
+        Arequired: round((1.5 * Vmax) / (0.95 * 290), 2),
+        Irequired: round(
+          (34560 * result.D.max) / (0.95 * 2000000 * result.L),
+          2
+        ),
         key: "2",
       },
       {
         name: "STEEL",
-        Srequired: 4.03,
-        Arequired: 0.19,
-        Irequired: 17.59,
+        Srequired: round((result.M.max * 12) / 21600, 2),
+        Arequired: round((1.5 * Vmax) / (0.4 * 36000), 2),
+        Irequired: round((34560 * result.D.max) / (29000000 * result.L), 2),
         key: "3",
       },
     ],
@@ -202,12 +215,12 @@ const App = () => {
         columns={loadTable.columns}
       />
       <Row gutter={[0, 10]} style={{ marginTop: "40px" }}>
-        <Col span="8">R1 = {result.R1} (kips)</Col>
-        <Col span="8">R2 = {result.R2} (kips)</Col>
-        <Col span="8">Vmax = {Math.max(result.R1, result.R2)} (kips)</Col>
+        <Col span="8">R1 = {result.R1} (lbs)</Col>
+        <Col span="8">R2 = {result.R2} (lbs)</Col>
+        <Col span="8">Vmax = {Vmax} (lbs)</Col>
       </Row>
       <Row gutter={[0, 10]}>
-        <Col span="6">Mmax = {result.M.max} (kip-in)</Col>
+        <Col span="6">Mmax = {result.M.max} (lbs-ft)</Col>
         <Col span="6">A left = {result.M.aleft} (ft)</Col>
       </Row>
       <Row gutter={[0, 10]} style={{ marginBottom: "40px" }}>
