@@ -116,7 +116,7 @@ const App = () => {
         name: "WOOD",
         Srequired: round((result.M.max * 12) / 1000, 2),
         Arequired: round((1.5 * Vmax) / 95, 2),
-        Irequired: round((34560 * result.D.max) / (1700000 * result.L), 2),
+        Irequired: round((20 * result.D.max) / (1700000 * result.L), 2),
         key: "0",
       },
       {
@@ -124,7 +124,7 @@ const App = () => {
         Srequired: round((result.M.max * 12) / (0.95 * 2400), 2),
         Arequired: round((1.5 * Vmax) / (0.95 * 165), 2),
         Irequired: round(
-          (34560 * result.D.max) / (0.95 * 1800000 * result.L),
+          (20 * result.D.max) / (0.95 * 1800000 * result.L),
           2
         ),
         key: "1",
@@ -134,7 +134,7 @@ const App = () => {
         Srequired: round((result.M.max * 12) / (0.95 * 2900), 2),
         Arequired: round((1.5 * Vmax) / (0.95 * 290), 2),
         Irequired: round(
-          (34560 * result.D.max) / (0.95 * 2000000 * result.L),
+          (20 * result.D.max) / (0.95 * 2000000 * result.L),
           2
         ),
         key: "2",
@@ -143,7 +143,7 @@ const App = () => {
         name: "STEEL",
         Srequired: round((result.M.max * 12) / 21600, 2),
         Arequired: round((1.5 * Vmax) / (0.4 * 36000), 2),
-        Irequired: round((34560 * result.D.max) / (29000000 * result.L), 2),
+        Irequired: round((20 * result.D.max) / (29000000 * result.L), 2),
         key: "3",
       },
     ],
