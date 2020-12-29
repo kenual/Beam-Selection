@@ -1,5 +1,6 @@
 {
   "name": "report",
+  "homepage": "/static/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,7 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rm -rf static && react-scripts build && mv build static",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
