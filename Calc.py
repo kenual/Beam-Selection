@@ -2,24 +2,24 @@
 
 # Dependency
 import numpy as np
+import json
 
 # Input
+BeamName = "RB"
 BeamNum = 1
 BeamLength = 15
 loadings = [
     {'type': 1, 'w': 100},
     {'type': 2, 'p': 1000, 'l1': 5},
-    #{'type':2, 'p':1000, 'l1':5},
-    #{'type':2, 'p':1000, 'l1':5},
-    #{'type':2, 'p':1000, 'l1':5},
-    #{'type':2, 'p':1000, 'l1':5}
+    {'type': 2, 'p': 1000, 'l1': 5},
+    {'type': 2, 'p': 1000, 'l1': 5},
+    {'type': 2, 'p': 1000, 'l1': 5},
+    {'type': 2, 'p': 1000, 'l1': 5},
     {'type': 3, 'w': 100},
     {'type': 4, 'w': 100, 'l1': 2.5, 'l2': 6}
 ]
 
-# Dependency
-
-# Program
+# Formula definitions
 
 
 def calcPoints(l):
@@ -118,18 +118,25 @@ def runMax(length, sumResults):
     maxDIndex = np.where(sumResults['D'] == maxD)
     maxDLocation = maxDIndex[0][0]*unit
     return {
-        'leftR': sumResults['leftR'],
-        'maxM': maxM,
-        'maxMLocation': maxMLocation,
-        'maxD': maxD,
-        'maxDLocation': maxDLocation,
-        'rightR': sumResults['rightR']
+        'beamName': BeamName+'--'+str(BeamNum),
+        'L': BeamLength,
+        'R1': sumResults['leftR'],
+        'R2': sumResults['rightR'],
+        'M': {
+            'max': maxM,
+            'aleft': maxMLocation
+        },
+        'D': {
+            'max': maxD,
+            'aleft': maxDLocation
+        }
     }
 
 
+# Execute calcuations on input
 totals = runSum(runCalc(loadings))
 maxResults = runMax(BeamLength, totals)
 
 
 # Output
-print(maxResults)
+print(json.dumps(maxResults, indent=2))
