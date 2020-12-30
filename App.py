@@ -1,6 +1,7 @@
-from flask import Flask, redirect
-import os
+import Calc
+from flask import Flask, jsonify, redirect
 import logging
+import os
 
 # Flask configuration parameters
 static_folder = "build"
@@ -15,6 +16,13 @@ app = Flask(__name__,
 @app.route('/')
 def index_html():
     return redirect("index.html", code=301)
+
+
+@app.route('/rest/Calc')
+def calc():
+    totals = Calc.runSum(Calc.runCalc(Calc.loadings))
+    maxResults = Calc.runMax(Calc.BeamLength, totals)
+    return jsonify(maxResults)
 
 
 if __name__ == '__main__':

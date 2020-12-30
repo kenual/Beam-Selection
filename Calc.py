@@ -120,6 +120,7 @@ def runMax(length, sumResults):
     return {
         'beamName': BeamName+'--'+str(BeamNum),
         'L': BeamLength,
+        'loadings': loadings,
         'R1': sumResults['leftR'],
         'R2': sumResults['rightR'],
         'M': {
@@ -133,10 +134,10 @@ def runMax(length, sumResults):
     }
 
 
-# Execute calcuations on input
-totals = runSum(runCalc(loadings))
-maxResults = runMax(BeamLength, totals)
+if __name__ == '__main__':
+    # Execute calcuations on input
+    totals = runSum(runCalc(loadings))
+    maxResults = runMax(BeamLength, totals)
 
-
-# Output
-print(json.dumps(maxResults, indent=2))
+    # Output
+    print(json.dumps(maxResults, indent=2))
