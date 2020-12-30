@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Col, Input, Modal, Row, Table } from "antd";
+import { useState, useEffect } from "react";
+import { Button, Col, Input, Modal, Row, Spin, Table } from "antd";
 import beamDiagram from "./beamDiagram";
 import "antd/dist/antd.css";
 import "./App.css";
@@ -10,38 +10,64 @@ const round = (num, decimalPlaces = 0) => {
   return Math.round(m) / p;
 };
 
+const extractLoadTableDataSource = (result) => {
+  let dataSource = [];
+  result.loadings.forEach((load) => {
+    // load
+    let loadString = "";
+    if (load.hasOwnProperty("w")) {
+      loadString = "w=" + load["w"] + " (plf)";
+    } else if (load.hasOwnProperty("p")) {
+      loadString = "p=" + load["p"] + " (lbs)";
+    }
+
+    // loadingLocation
+    let location = "";
+    if (load.hasOwnProperty("l1")) {
+      location += "L1=" + load["l1"];
+      if (load.hasOwnProperty("l2")) {
+        location += ", L2=" + load["l2"];
+      }
+    } else {
+      location += result.L;
+    }
+
+    const newLoad = {
+      loadType: load["type"],
+      load: loadString,
+      loadingLocation: location,
+      key: dataSource.length,
+    };
+
+    dataSource.push(newLoad);
+  });
+  return dataSource;
+};
+
 const App = () => {
   const [showResult, setShowResult] = useState(false);
-  const result = window.result;
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    const getResult = async () => {
+      console.log("Before");
+      const calcResponse = await fetch("/rest/Calc");
+      const jsonObject = await calcResponse.json();
+      console.log("After");
+      setResult(jsonObject);
+    };
+    getResult();
+  }, []);
+
+  if (result == null) {
+    return <Spin />;
+  }
+
   const Vmax = Math.max(result.R1, result.R2);
 
+  const loadings = extractLoadTableDataSource(result);
   const loadTable = {
-    dataSource: [
-      {
-        loadType: "1",
-        load: "w=100 (plf)",
-        loadingLocation: "15",
-        key: "0",
-      },
-      {
-        loadType: "2",
-        load: "p=1000 (lbs)",
-        loadingLocation: "L1=5",
-        key: "1",
-      },
-      {
-        loadType: "3",
-        load: "w=100 (plf)",
-        loadingLocation: "15",
-        key: "2",
-      },
-      {
-        loadType: "4",
-        load: "w=100 (plf)",
-        loadingLocation: "L1=2.5, L2=6",
-        key: "3",
-      },
-    ],
+    dataSource: loadings,
     columns: [
       {
         dataIndex: "loadType",
@@ -62,6 +88,7 @@ const App = () => {
     fontFamily: "'Lucida Console', 'Courier New', monospace",
     fontSize: "20px",
   };
+
   const requiredTable = {
     dataSource: [
       {
@@ -161,17 +188,17 @@ const App = () => {
             columns={loadTable.columns}
           />
         </Col>
-        <Col span={10}>{beamDiagram()}</Col>
+        <Col span={10}>{beamDiagram(result)}</Col>
       </Row>
       <Row gutter={[0, 10]} style={marginTop}>
         <Col span="8" style={dataFontStyle}>
-          R1 = {result.R1} (lbs)
+          R1 = {round(result.R1, 0)} (lbs)
         </Col>
         <Col span="8" style={dataFontStyle}>
-          R2 = {result.R2} (lbs)
+          R2 = {round(result.R2, 0)} (lbs)
         </Col>
         <Col span="8" style={dataFontStyle}>
-          Vmax = {Vmax} (lbs)
+          Vmax = {round(Vmax, 0)} (lbs)
         </Col>
       </Row>
       <Row gutter={[0, 10]}>

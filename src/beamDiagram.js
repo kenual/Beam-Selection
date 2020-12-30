@@ -1,4 +1,4 @@
-const beamDialog = () => {
+const beamDialog = (result) => {
   const boldArrowStyle = {
     fontStyle: "bold",
     fontSize: "60px",
@@ -34,7 +34,7 @@ const beamDialog = () => {
         R1
       </text>
       <text x="150" y="200" fontSize="large">
-        {window.result.L + "'"}
+        {result.L + "'"}
       </text>
       <text x="283" y="183" style={boldArrowStyle}>
         ↑
