@@ -2,6 +2,7 @@ import Calc
 from flask import Flask, jsonify, redirect
 import logging
 import os
+import socket
 
 # Flask configuration parameters
 static_folder = "build"
@@ -32,4 +33,4 @@ if __name__ == '__main__':
     logging.info("Path for the static files on the web - " +
                  (app.static_url_path if app.static_url_path else "/"))
 
-    app.run(host='0.0.0.0', port=http_port)
+    app.run(host=socket.gethostbyname(socket.gethostname()), port=http_port)
