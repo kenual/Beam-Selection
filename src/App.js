@@ -15,83 +15,31 @@ const App = () => {
   const result = window.result;
   const Vmax = Math.max(result.R1, result.R2);
 
-  const inputTable = {
-    dataSource: [
-      {
-        unit: "(plf)",
-        label: "w1 =",
-        formula: "",
-        value: result.w1,
-        key: "0",
-      },
-      {
-        unit: "(plf)",
-        label: "w2 =",
-        formula: "",
-        value: result.w2,
-        key: "1",
-      },
-      {
-        unit: "(lbs)",
-        label: "P1 =",
-        formula: "",
-        value: result.P1,
-        key: "2",
-      },
-      {
-        unit: "(lbs)",
-        label: "P2 =",
-        formula: "",
-        value: result.P2,
-        key: "3",
-      },
-      {
-        unit: "(lbs)",
-        label: "P3 =",
-        formula: "",
-        value: result.P3,
-        key: "4",
-      },
-    ],
-    columns: [
-      {
-        dataIndex: "label",
-        align: "right",
-      },
-      {
-        dataIndex: "formula",
-        align: "left",
-        render: (text) => <Input placeholder={text} bordered={false} />,
-      },
-      {
-        dataIndex: "equal",
-        align: "right",
-        width: "5px",
-        render: () => "=",
-      },
-      {
-        dataIndex: "value",
-      },
-      {
-        dataIndex: "unit",
-        align: "left",
-      },
-    ],
-  };
-
   const loadTable = {
     dataSource: [
       {
         loadType: "1",
-        load: "326",
-        loadingLocation: "1",
+        load: "w=100 (plf)",
+        loadingLocation: "15",
         key: "0",
       },
       {
-        loadType: "3",
-        load: "1000",
-        loadingLocation: "20",
+        loadType: "2",
+        load: "p=1000 (lbs)",
+        loadingLocation: "L1=5",
         key: "1",
+      },
+      {
+        loadType: "3",
+        load: "w=100 (plf)",
+        loadingLocation: "15",
+        key: "2",
+      },
+      {
+        loadType: "4",
+        load: "w=100 (plf)",
+        loadingLocation: "L1=2.5, L2=6",
+        key: "3",
       },
     ],
     columns: [
@@ -105,11 +53,15 @@ const App = () => {
       },
       {
         dataIndex: "loadingLocation",
-        title: "Loading Location",
+        title: "Loading Location (ft)",
       },
     ],
   };
 
+  const dataFontStyle = {
+    fontFamily: "'Lucida Console', 'Courier New', monospace",
+    fontSize: "20px",
+  };
   const requiredTable = {
     dataSource: [
       {
@@ -123,20 +75,14 @@ const App = () => {
         name: "GLULAM",
         Srequired: round((result.M.max * 12) / (0.95 * 2400), 2),
         Arequired: round((1.5 * Vmax) / (0.95 * 165), 2),
-        Irequired: round(
-          (20 * result.D.max) / (0.95 * 1800000 * result.L),
-          2
-        ),
+        Irequired: round((20 * result.D.max) / (0.95 * 1800000 * result.L), 2),
         key: "1",
       },
       {
         name: "PARALLAM",
         Srequired: round((result.M.max * 12) / (0.95 * 2900), 2),
         Arequired: round((1.5 * Vmax) / (0.95 * 290), 2),
-        Irequired: round(
-          (20 * result.D.max) / (0.95 * 2000000 * result.L),
-          2
-        ),
+        Irequired: round((20 * result.D.max) / (0.95 * 2000000 * result.L), 2),
         key: "2",
       },
       {
@@ -166,7 +112,9 @@ const App = () => {
       {
         dataIndex: "use",
         title: "Use",
-        render: (text) => <Input placeholder={text} bordered={false} />,
+        render: (text) => (
+          <Input placeholder={text} bordered={false} style={dataFontStyle} />
+        ),
       },
     ],
   };
@@ -194,38 +142,53 @@ const App = () => {
     </Modal>
   );
 
+  const marginTop = {
+    marginTop: "40px",
+  };
+  const marginBottom = {
+    marginBottom: "80px",
+  };
+
   return (
     <>
       {resultDialog}
-      <Row>
+      <h2 onClick={() => setShowResult(true)}>{result.beamName}</h2>
+      <Row align="middle">
         <Col span={24 - 10}>
-          <h2 onClick={() => setShowResult(true)}>{result.beamName}</h2>
           <Table
-            showHeader={false}
             pagination={false}
-            dataSource={inputTable.dataSource}
-            columns={inputTable.columns}
+            dataSource={loadTable.dataSource}
+            columns={loadTable.columns}
           />
         </Col>
         <Col span={10}>{beamDiagram()}</Col>
       </Row>
-      <Table
-        pagination={false}
-        dataSource={loadTable.dataSource}
-        columns={loadTable.columns}
-      />
-      <Row gutter={[0, 10]} style={{ marginTop: "40px" }}>
-        <Col span="8">R1 = {result.R1} (lbs)</Col>
-        <Col span="8">R2 = {result.R2} (lbs)</Col>
-        <Col span="8">Vmax = {Vmax} (lbs)</Col>
+      <Row gutter={[0, 10]} style={marginTop}>
+        <Col span="8" style={dataFontStyle}>
+          R1 = {result.R1} (lbs)
+        </Col>
+        <Col span="8" style={dataFontStyle}>
+          R2 = {result.R2} (lbs)
+        </Col>
+        <Col span="8" style={dataFontStyle}>
+          Vmax = {Vmax} (lbs)
+        </Col>
       </Row>
       <Row gutter={[0, 10]}>
-        <Col span="6">Mmax = {result.M.max} (lbs-ft)</Col>
-        <Col span="6">A left = {result.M.aleft} (ft)</Col>
+        <Col span="10" style={dataFontStyle}>
+          Mmax = {result.M.max} (lbs-ft)
+        </Col>
+        <Col span="8" style={dataFontStyle}>
+          A left = {result.M.aleft} (ft)
+        </Col>
       </Row>
-      <Row gutter={[0, 10]} style={{ marginBottom: "40px" }}>
-        <Col span="6">Dmax = {result.D.max} /EI(in)</Col>
-        <Col span="6">A left = {result.D.aleft} (ft)</Col>
+      <Row gutter={[0, 10]} style={marginBottom}>
+        <Col span="10" style={dataFontStyle}>
+          Dmax = {result.D.max}/EI(in)
+        </Col>
+        <Col span="8" style={dataFontStyle}>
+          A left = {result.D.aleft} (ft)
+        </Col>
       </Row>
       <Table
         pagination={false}

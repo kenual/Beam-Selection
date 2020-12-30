@@ -1,8 +1,11 @@
 .ant-table-tbody > tr > td {
-    height: 6px;
-    padding: 3px;
-  }  
+  height: 6px;
+  padding: 3px;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: 20px;  
+}
 .ant-table-thead > tr > th {
   height: 6px;
   padding: 3px;
+  font-size: 15px;  
 }

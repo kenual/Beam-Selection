@@ -1,11 +1,7 @@
 var result = {
   beamName: "RB--1",
   L: 15,
-  w1: 100,
-  w2: "",
-  P1: "",
-  P2: "",
-  P3: "",
+  loadings: [],
   R1: 750,
   R2: 750,
   M: {
@@ -13,7 +9,8 @@ var result = {
     aleft: 7.5,
   },
   D: {
-    max: 1.139E+08,
+    max: 1.139e8,
     aleft: 7.5,
   },
 };
+console.log(JSON.stringify(result));
