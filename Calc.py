@@ -25,7 +25,7 @@ def calc1(l, w):
     points = calcPoints(l)
     R1 = R2 = w*l/2
     M1 = w*points*(l-points)/2
-    D1 = w*points*(l**3-2*l*points**2+points**3)/24
+    D1 = w*points*(l**3-2*l*points**2+points**3)*(12**3)/24
     return {'leftR': R1, 'M': M1, 'D': D1, 'rightR': R2}
 
 
@@ -107,9 +107,9 @@ def runMax(length, sumResults):
     maxM = np.max(sumResults['M'])
     maxD = np.max(sumResults['D'])
     maxMIndex = np.where(sumResults['M'] == maxM)
-    maxMLocation = maxMIndex[0][0]*unit
+    maxMLocation = (maxMIndex[0][0]+1)*unit
     maxDIndex = np.where(sumResults['D'] == maxD)
-    maxDLocation = maxDIndex[0][0]*unit
+    maxDLocation = (maxDIndex[0][0]+1)*unit
     return {
         'beamName': BeamName+'--'+str(BeamNum),
         'L': BeamLength,
