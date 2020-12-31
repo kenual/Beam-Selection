@@ -36,11 +36,11 @@ def calc2(l, p, a):
     R4 = p*a/l
     leftPoints = points[points < a]
     M2L = p*b*leftPoints/l
-    D2L = p*b*leftPoints*(l**2-b**2-leftPoints**2)/(6*l)
+    D2L = p*b*leftPoints*(l**2-b**2-leftPoints**2)*(12**3)/(6*l)
 
     rightPoints = points[points > a]
     M2R = p*a/l*(l-rightPoints)
-    D2R = p*a*(l-rightPoints)*(l**2-a**2-(l-rightPoints)**2)/(6*l)
+    D2R = p*a*(l-rightPoints)*(l**2-a**2-(l-rightPoints)**2)*(12**3)/(6*l)
 
     M2 = np.concatenate((M2L, M2R))
     D2 = np.concatenate((D2L, D2R))
@@ -52,7 +52,7 @@ def calc3(l, w):
     R5 = w*l/6
     R6 = w*l/3
     M3 = w*points*(l**2-points**2)/(6*l)
-    D3 = w*points*l/2*(3*points**4-10*l**2*points**2+7*l**4)/(180*l**2)
+    D3 = w*points*l/2*(3*points**4-10*l**2*points**2+7*l**4)*(12**3)/(180*l**2)
     return {'leftR': R5, 'M': M3, 'D': D3, 'rightR': R6}
 
 
@@ -68,15 +68,16 @@ def calc4(l, w, d, c):
     rightPoints = points[points > c+d]
 
     M4left = w*c*b*leftPoints/l
-    D4left = (w*c*b*(4*l-4*b**2/l-c**2/l)*leftPoints-4*leftPoints**3)/24
+    D4left = w*c*b*((4*l-4*b**2/l-c**2/l) *
+                    leftPoints-4*leftPoints**3)*(12**3)/24
 
     M4mid = w*c*b/l*midPoints-w*(midPoints-d)**2/2
-    D4mid = (w*c*b*(4*l-4*b**2/l-c**2/l) * midPoints -
-             4*midPoints**3/l+(midPoints-d)**4/(b*c))/24
+    D4mid = w*c*b*((4*l-4*b**2/l-c**2/l) * midPoints -
+                   4*midPoints**3/l+(midPoints-d)**4/b/c)*(12**3)/24
 
     M4right = w*c*a*(1-rightPoints/l)
     D4right = w*c*(4*b*(l-b**2/l)*rightPoints-4*b*rightPoints **
-                   3/l+4*(rightPoints-a)**3-a*c**2*(1-rightPoints/l))/24
+                   3/l+4*(rightPoints-a)**3-a*c**2*(1-rightPoints/l))*(12**3)/24
 
     M4 = np.concatenate((M4left, M4mid, M4right))
     D4 = np.concatenate((D4left, D4mid, D4right))
