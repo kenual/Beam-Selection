@@ -38,7 +38,7 @@ def calc2(l, p, a):
     M2L = p*b*leftPoints/l
     D2L = p*b*leftPoints*(l**2-b**2-leftPoints**2)*(12**3)/(6*l)
 
-    rightPoints = points[points > a]
+    rightPoints = points[points >= a]
     M2R = p*a/l*(l-rightPoints)
     D2R = p*a*(l-rightPoints)*(l**2-a**2-(l-rightPoints)**2)*(12**3)/(6*l)
 
@@ -63,8 +63,8 @@ def calc4(l, w, d, c):
     R7 = w*c*b/l
     R8 = w*c*a/l
 
-    leftPoints = points[points < d]
-    midPoints = points[np.logical_and(points >= d, points <= c+d)]
+    leftPoints = points[points <= d]
+    midPoints = points[np.logical_and(points > d, points <= c+d)]
     rightPoints = points[points > c+d]
 
     M4left = w*c*b*leftPoints/l
