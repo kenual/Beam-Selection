@@ -1,5 +1,5 @@
 import Calc
-from flask import Flask, jsonify, redirect
+from flask import Flask, jsonify, redirect, request
 import logging
 import os
 import webbrowser
@@ -19,10 +19,18 @@ def index_html():
     return redirect("index.html", code=301)
 
 
+def shutdown_server():
+    shutDownFunc = request.environ.get('werkzeug.server.shutdown')
+    if shutDownFunc is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    shutDownFunc()
+
+
 @app.route('/rest/Calc')
 def calc():
     totals = Calc.runSum(Calc.runCalc(Calc.loadings))
     maxResults = Calc.runMax(Calc.BeamLength, totals)
+    shutdown_server()
     return jsonify(maxResults)
 
 
