@@ -69,7 +69,7 @@ def calc4(l, w, d, c):
 
     M4left = w*c*b*leftPoints/l
     D4left = w*c*b*((4*l-4*b**2/l-c**2/l) *
-                    leftPoints-4*leftPoints**3)*(12**3)/24
+                    leftPoints-4*leftPoints**3/l)*(12**3)/24
 
     M4mid = w*c*b/l*midPoints-w*(midPoints-d)**2/2
     D4mid = w*c*b*((4*l-4*b**2/l-c**2/l) * midPoints -
